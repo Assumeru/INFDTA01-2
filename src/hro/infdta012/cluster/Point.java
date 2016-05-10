@@ -1,4 +1,4 @@
-package hro.infdta012;
+package hro.infdta012.cluster;
 
 import hro.infdta012.similarity.DistanceCalculator;
 import hro.infdta012.similarity.DistanceComparable;
@@ -13,5 +13,9 @@ public class Point implements DistanceComparable<Point> {
 	@Override
 	public double compare(DistanceCalculator calculator, Point other) {
 		return calculator.getDistance(properties, other.properties);
+	}
+
+	public double[] getProperties() {
+		return properties;
 	}
 }
