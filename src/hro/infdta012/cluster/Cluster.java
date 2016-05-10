@@ -5,8 +5,10 @@ import java.util.Set;
 
 import hro.infdta012.similarity.DistanceCalculator;
 import hro.infdta012.similarity.DistanceComparable;
+import hro.infdta012.similarity.SquaredEuclidianDistance;
 
 public class Cluster implements DistanceComparable<Point> {
+	private static final DistanceCalculator SQUARED_DISTANCE = new SquaredEuclidianDistance();
 	private Set<Point> points;
 	private Point position;
 
@@ -41,8 +43,16 @@ public class Cluster implements DistanceComparable<Point> {
 		return sums;
 	}
 
+	public double getSSE() {
+		double sum = 0;
+		for(Point p : points) {
+			sum += compare(SQUARED_DISTANCE, p);
+		}
+		return sum;
+	}
+
 	@Override
 	public String toString() {
-		return "Cluster(" + points.size() + ") {" + points.toString() + "}";
+		return "Cluster(" + points.size() + ", " + getSSE() + ") {" + points.toString() + "}";
 	}
 }
