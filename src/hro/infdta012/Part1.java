@@ -20,7 +20,26 @@ public class Part1 {
 		ClusterCreator creator = new ClusterCreator(points, new KMeans(new EuclidianDistance()));
 		Cluster[] clusters = creator.createClusters(numClusters, numIterations);
 		for(Cluster c : clusters) {
-			System.out.println(c);
+			postProcess(c);
 		}
+	}
+
+	private static void postProcess(Cluster c) {
+		int[] count = new int[c.getPosition().getProperties().length];
+		for(Point p : c.getPoints()) {
+			for(int i = 0; i < count.length; i++) {
+				if(p.getProperties()[i] > 0) {
+					count[i]++;
+				}
+			}
+		}
+		System.out.println("SSE: " + c.getSSE());
+		System.out.println("Clients: " + c.getPoints().size());
+		for(int i = 0; i < count.length; i++) {
+			if(count[i] > 3) {
+				System.out.println(i + " was bought " + count[i] + " times");
+			}
+		}
+		System.out.println();
 	}
 }

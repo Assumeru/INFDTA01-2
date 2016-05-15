@@ -51,6 +51,10 @@ public class Cluster implements DistanceComparable<Point> {
 		return sum;
 	}
 
+	public Point getPosition() {
+		return position;
+	}
+
 	@Override
 	public String toString() {
 		return "Cluster(" + points.size() + ", " + getSSE() + ") {" + points.toString() + "}";
