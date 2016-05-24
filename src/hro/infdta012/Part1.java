@@ -19,9 +19,19 @@ public class Part1 {
 		List<Point> points = new PointParser(args[2]).parsePoints();
 		ClusterCreator creator = new ClusterCreator(points, new KMeans(new EuclidianDistance()));
 		Cluster[] clusters = creator.createClusters(numClusters, numIterations);
+		printSSE(clusters);
 		for(Cluster c : clusters) {
 			postProcess(c);
 		}
+	}
+
+	private static void printSSE(Cluster[] clusters) {
+		double sum = 0;
+		for(Cluster cluster : clusters) {
+			sum += cluster.getSquaredErrors();
+		}
+		System.out.println("SSE: " + sum);
+		System.out.println();
 	}
 
 	private static void postProcess(Cluster c) {
@@ -33,11 +43,10 @@ public class Part1 {
 				}
 			}
 		}
-		System.out.println("SSE: " + c.getSSE());
 		System.out.println("Clients: " + c.getPoints().size());
 		for(int i = 0; i < count.length; i++) {
 			if(count[i] > 3) {
-				System.out.println(i + " was bought " + count[i] + " times");
+				System.out.println((i + 1) + " was bought " + count[i] + " times");
 			}
 		}
 		System.out.println();

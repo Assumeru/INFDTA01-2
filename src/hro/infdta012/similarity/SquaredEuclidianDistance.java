@@ -10,5 +10,4 @@ public class SquaredEuclidianDistance implements DistanceCalculator {
 		}
 		return sum;
 	}
-
 }

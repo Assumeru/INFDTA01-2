@@ -54,7 +54,7 @@ public class ClusterCreator {
 	private double getSSE(Cluster[] clusters) {
 		double sum = 0;
 		for(Cluster c : clusters) {
-			sum += c.getSSE();
+			sum += c.getSquaredErrors();
 		}
 		return sum;
 	}

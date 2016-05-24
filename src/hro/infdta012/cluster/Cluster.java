@@ -43,7 +43,7 @@ public class Cluster implements DistanceComparable<Point> {
 		return sums;
 	}
 
-	public double getSSE() {
+	public double getSquaredErrors() {
 		double sum = 0;
 		for(Point p : points) {
 			sum += compare(SQUARED_DISTANCE, p);
@@ -57,6 +57,6 @@ public class Cluster implements DistanceComparable<Point> {
 
 	@Override
 	public String toString() {
-		return "Cluster(" + points.size() + ", " + getSSE() + ") {" + points.toString() + "}";
+		return "Cluster(" + points.size() + ", " + getSquaredErrors() + ") {" + points.toString() + "}";
 	}
 }
