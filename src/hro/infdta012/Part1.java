@@ -19,19 +19,11 @@ public class Part1 {
 		List<Point> points = new PointParser(args[2]).parsePoints();
 		ClusterCreator creator = new ClusterCreator(points, new KMeans(new EuclidianDistance()));
 		Cluster[] clusters = creator.createClusters(numClusters, numIterations);
-		printSSE(clusters);
+		System.out.println("SSE: " + creator.getSSE(clusters));
+		System.out.println();
 		for(Cluster c : clusters) {
 			postProcess(c);
 		}
-	}
-
-	private static void printSSE(Cluster[] clusters) {
-		double sum = 0;
-		for(Cluster cluster : clusters) {
-			sum += cluster.getSquaredErrors();
-		}
-		System.out.println("SSE: " + sum);
-		System.out.println();
 	}
 
 	private static void postProcess(Cluster c) {
