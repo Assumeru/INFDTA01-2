@@ -32,6 +32,9 @@ public class Cluster implements DistanceComparable<Point> {
 
 	public double[] getMean() {
 		double[] sums = new double[position.getProperties().length];
+		if(points.isEmpty()) {
+			return sums;
+		}
 		for(Point p : points) {
 			for(int i = 0; i < p.getProperties().length; i++) {
 				sums[i] += p.getProperties()[i];
