@@ -11,15 +11,15 @@ import java.util.function.Function;
 
 public class GeneticAlgorithm<T> {
 	private Comparator<Individual<T>> comparator = (l, r) -> getFitness(r).compareTo(getFitness(l));
-	private Map<T, Integer> fitness = new HashMap<>();
+	private Map<T, Double> fitness = new HashMap<>();
 	private int bits;
 	private double crossoverRate;
 	private double mutationRate;
 	private boolean elitism;
 	private List<Individual<T>> population;
-	private Function<T, Integer> fitnessAlgorithm;
+	private Function<T, Double> fitnessAlgorithm;
 
-	public GeneticAlgorithm(int bits, double crossoverRate, double mutationRate, boolean elitism, List<Individual<T>> population, Function<T, Integer> fitnessAlgorithm) {
+	public GeneticAlgorithm(int bits, double crossoverRate, double mutationRate, boolean elitism, List<Individual<T>> population, Function<T, Double> fitnessAlgorithm) {
 		this.bits = bits;
 		this.crossoverRate = crossoverRate;
 		this.mutationRate = mutationRate;
@@ -44,7 +44,7 @@ public class GeneticAlgorithm<T> {
 			iterations--;
 			newPopulation.add(population.get(0));
 		}
-		int fitnessSum = 0;
+		double fitnessSum = 0;
 		for(Individual<T> individual : population) {
 			fitnessSum += getFitness(individual);
 		}
@@ -62,7 +62,7 @@ public class GeneticAlgorithm<T> {
 		population = newPopulation;
 	}
 
-	private Collection<Individual<T>> getChildren(int fitnessSum) {
+	private Collection<Individual<T>> getChildren(double fitnessSum) {
 		Individual<T> p1 = selectParent(fitnessSum, null);
 		Individual<T> p2 = selectParent(fitnessSum - getFitness(p1), p1);
 		if(Math.random() < crossoverRate) {
@@ -88,8 +88,8 @@ public class GeneticAlgorithm<T> {
 		return last;
 	}
 
-	public Integer getFitness(Individual<T> individual) {
-		Integer out = fitness.get(individual.getValue());
+	public Double getFitness(Individual<T> individual) {
+		Double out = fitness.get(individual.getValue());
 		if(out == null) {
 			out = fitnessAlgorithm.apply(individual.getValue());
 			fitness.put(individual.getValue(), out);

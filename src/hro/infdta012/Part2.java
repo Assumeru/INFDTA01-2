@@ -22,9 +22,9 @@ public class Part2 {
 			return;
 		}
 		List<Individual<Byte>> population = initPopulation(populationSize);
-		Function<Byte, Integer> fitnessAlgorithm = b -> {
+		Function<Byte, Double> fitnessAlgorithm = b -> {
 			int x = b & 0xFF;
-			return x * (7 - x);
+			return (double) (x * (7 - x));
 		};
 
 		GeneticAlgorithm<Byte> algorithm = new GeneticAlgorithm<>(BITS, crossoverRate, mutationRate, elitism, population, fitnessAlgorithm);
