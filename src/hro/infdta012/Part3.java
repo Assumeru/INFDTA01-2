@@ -8,7 +8,8 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 
-import hro.infdta012.prediction.SESFrame;
+import hro.infdta012.prediction.DoubleExponentialSmoothing;
+import hro.infdta012.prediction.Graphs;
 import hro.infdta012.prediction.SimpleExponentialSmoothing;
 
 public class Part3 {
@@ -20,7 +21,7 @@ public class Part3 {
 		JFrame window = new JFrame();
 		window.setTitle("Part 3");
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.add(getSES(values));
+		window.add(getGraphs(values));
 		window.setSize(400, 300);
 		window.setVisible(true);
 	}
@@ -35,10 +36,15 @@ public class Part3 {
 		return values;
 	}
 
-	private static SESFrame getSES(List<Double> values) {
+	private static Graphs getGraphs(List<Double> values) {
 		SimpleExponentialSmoothing ses = new SimpleExponentialSmoothing(values, MONTHS);
 		double factor = ses.getBestSmoothingFactor();
-		double[] forecast = ses.getPredictions(factor, PREDICTION);
-		return new SESFrame(values, forecast, factor);
+		double[] forecastSES = ses.getPredictions(factor, PREDICTION);
+		DoubleExponentialSmoothing des = new DoubleExponentialSmoothing(values);
+		double[] factors = des.getBestFactors();
+		double[] forecastDES = des.getPredictions(factors[0], factors[1], PREDICTION);
+		String sesStats = "Smoothing factor: " + factor + " Error measure: " + ses.getErrorMeasure();
+		String desStats = "\u03B1: " + factors[0] + " \u03B2: " + factors[1] + " Error measure: " + des.getErrorMeasure();
+		return new Graphs(values, forecastSES, sesStats, forecastDES, desStats);
 	}
 }

@@ -8,11 +8,11 @@ import hro.infdta012.genetic.Individual;
 import hro.infdta012.genetic.IntegerIndividual;
 
 public class SimpleExponentialSmoothing {
-	private static final int BITS = 20;
+	static final int BITS = 20;
 	private static final double MAX_VALUE = Math.pow(2, BITS) - 1;
-	private static final double CROSSOVER_RATE = 0.5;
-	private static final double MUTATION_RATE = 0.05;
-	private static final int POPULATION_SIZE = 20;
+	static final double CROSSOVER_RATE = 0.5;
+	static final double MUTATION_RATE = 0.05;
+	static final int POPULATION_SIZE = 20;
 	private static final int ITERATIONS = 1000;
 	private List<Double> values;
 	private double[] oneStepForecast;
@@ -48,15 +48,14 @@ public class SimpleExponentialSmoothing {
 	}
 
 	private double getFitness(int input) {
-		double factor = input / MAX_VALUE;
-		calculateSmoothedValues(factor);
+		calculateSmoothedValues(getFactor(input));
 		return -getSumOfSquaredErrors();
 	}
 
 	public double getBestSmoothingFactor() {
 		GeneticAlgorithm<Integer> algorithm = new GeneticAlgorithm<>(BITS, CROSSOVER_RATE, MUTATION_RATE, true, initPopulation(), this::getFitness);
 		List<Individual<Integer>> out = algorithm.run(ITERATIONS);
-		return out.get(0).getValue() / MAX_VALUE;
+		return getFactor(out.get(0).getValue());
 	}
 
 	private List<Individual<Integer>> initPopulation() {
@@ -75,5 +74,13 @@ public class SimpleExponentialSmoothing {
 			out[i] = oneStepForecast[oneStepForecast.length - 1];
 		}
 		return out;
+	}
+
+	public double getErrorMeasure() {
+		return Math.sqrt(getSumOfSquaredErrors() / (values.size() - 1));
+	}
+
+	static double getFactor(int input) {
+		return input / MAX_VALUE;
 	}
 }
