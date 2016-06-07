@@ -34,15 +34,15 @@ public class DoubleExponentialSmoothing {
 
 	private double getSumOfSquaredErrors() {
 		double sum = 0;
-		for(int i = 0; i < values.size(); i++) {
-			double d = values.get(i) - (smoothed[i] + trend[i]);
+		for(int i = 2; i < values.size(); i++) {
+			double d = values.get(i) - (smoothed[i-2] + trend[i-2]);
 			sum += d * d;
 		}
 		return sum;
 	}
 
 	private double getFitness(long input) {
-		int alpha = (int) (input >> SimpleExponentialSmoothing.BITS) & MASK;
+		int alpha = (int) ((input >> SimpleExponentialSmoothing.BITS) & MASK);
 		int beta = (int) (input & MASK);
 		calculateSmoothedValues(SimpleExponentialSmoothing.getFactor(alpha), SimpleExponentialSmoothing.getFactor(beta));
 		return -getSumOfSquaredErrors();
@@ -52,7 +52,7 @@ public class DoubleExponentialSmoothing {
 		GeneticAlgorithm<Long> algorithm = new GeneticAlgorithm<>(BITS, SimpleExponentialSmoothing.CROSSOVER_RATE, SimpleExponentialSmoothing.MUTATION_RATE, true, initPopulation(), this::getFitness);
 		List<Individual<Long>> out = algorithm.run(ITERATIONS);
 		long input = out.get(0).getValue();
-		int alpha = (int) (input >> SimpleExponentialSmoothing.BITS) & MASK;
+		int alpha = (int) ((input >> SimpleExponentialSmoothing.BITS) & MASK);
 		int beta = (int) (input & MASK);
 		return new double[] {SimpleExponentialSmoothing.getFactor(alpha), SimpleExponentialSmoothing.getFactor(beta)};
 	}

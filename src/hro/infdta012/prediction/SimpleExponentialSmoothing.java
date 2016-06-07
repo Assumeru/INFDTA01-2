@@ -40,7 +40,7 @@ public class SimpleExponentialSmoothing {
 
 	private double getSumOfSquaredErrors() {
 		double sum = 0;
-		for(int i = 0; i < values.size(); i++) {
+		for(int i = 1; i < values.size(); i++) {
 			double d = values.get(i) - oneStepForecast[i];
 			sum += d * d;
 		}

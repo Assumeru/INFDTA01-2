@@ -24,7 +24,7 @@ public class LongIndividual extends Individual<Long> {
 		long p2 = parent.getValue();
 		for(int i = 0; i < Long.SIZE; i++) {
 			if(Math.random() < 0.5) {
-				f |= (p2 & (1 << i));
+				f |= (p2 & (1L << i));
 			}
 		}
 		return new LongIndividual(Long.valueOf(f));
@@ -35,7 +35,7 @@ public class LongIndividual extends Individual<Long> {
 		long value = getValue();
 		for(int i = 0; i < bits; i++) {
 			if(Math.random() < mutationRate) {
-				value ^= (1 << i);
+				value ^= (1L << i);
 			}
 		}
 		return new LongIndividual(Long.valueOf(value));
