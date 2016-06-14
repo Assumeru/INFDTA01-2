@@ -17,8 +17,8 @@ public class DoubleExponentialSmoothing {
 
 	public DoubleExponentialSmoothing(List<Double> values) {
 		this.values = values;
-		smoothed = new double[values.size()];
-		trend = new double[values.size()];
+		smoothed = new double[values.size() - 1];
+		trend = new double[values.size() - 1];
 		smoothed[0] = values.get(1);
 		trend[0] = values.get(1) - values.get(0);
 	}
@@ -27,7 +27,7 @@ public class DoubleExponentialSmoothing {
 		double inverseA = 1 - alpha;
 		double inverseB = 1 - beta;
 		for(int i = 1; i < smoothed.length; i++) {
-			smoothed[i] = alpha * values.get(i) + inverseA * (smoothed[i - 1] + trend[i - 1]);
+			smoothed[i] = alpha * values.get(i + 1) + inverseA * (smoothed[i - 1] + trend[i - 1]);
 			trend[i] = beta * (smoothed[i] - smoothed[i - 1]) + inverseB * trend[i - 1];
 		}
 	}
@@ -70,9 +70,10 @@ public class DoubleExponentialSmoothing {
 		double[] out = new double[maxT];
 		int max = smoothed.length - 1;
 		out[0] = values.get(0);
-		for(int i = 1; i <= maxT; i++) {
+		out[1] = values.get(1);
+		for(int i = 2; i <= maxT; i++) {
 			if(i < smoothed.length) {
-				out[i] = smoothed[i] + trend[i];
+				out[i] = smoothed[i - 1] + trend[i - 1];
 			} else if(i > smoothed.length) {
 				out[i - 1] = smoothed[max] + (i - max) * trend[max];
 			}
