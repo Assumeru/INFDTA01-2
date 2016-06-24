@@ -53,7 +53,9 @@ public class Graphs extends JPanel {
 		double xMult = width / xMax;
 		double yMult = height / (yMax - yMin);
 		drawLine(g, xMult, yMult, Color.GREEN, originalValues.size(), originalValues::get);
-		drawLine(g, xMult, yMult, Color.BLACK, sesValues.length, i -> sesValues[i]);
+		if(sesValues.length > 0) {
+			drawLine(g, xMult, yMult, Color.BLACK, sesValues.length, i -> sesValues[i]);
+		}
 		drawLine(g, xMult, yMult, Color.BLUE, desValues.length, i -> desValues[i]);
 	}
 
